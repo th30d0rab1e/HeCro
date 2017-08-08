@@ -3,9 +3,15 @@ myApp.controller('LoginController', function($http, $location, UserService) {
     var vm = this;
     vm.user = {
       username: '',
-      password: ''
+      password: '',
+      role: ''
     };
     vm.message = '';
+
+    vm.roles = [
+      {role: "Manager or Responsible Party", type: 1},
+      {role: "PCA or Responsible for Party", type: 2}
+    ];
 
     vm.login = function() {
       console.log('LoginController -- login');
@@ -30,7 +36,10 @@ myApp.controller('LoginController', function($http, $location, UserService) {
     };
 
     vm.registerUser = function() {
+      console.log('role', vm.selectedRole.type);
+      vm.user.role = vm.selectedRole.type;
       console.log('LoginController -- registerUser');
+
       if(vm.user.username === '' || vm.user.password === '') {
         vm.message = "Choose a username and password!";
       } else {
@@ -40,7 +49,7 @@ myApp.controller('LoginController', function($http, $location, UserService) {
           $location.path('/home');
         }).catch(function(response) {
           console.log('LoginController -- registerUser -- error');
-          vm.message = "Please try again."
+          vm.message = "Please try again.";
         });
       }
     }

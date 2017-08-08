@@ -10,8 +10,23 @@
         <label for="password">Password:</label>
         <input type="password" ng-model="lc.user.password" />
     </div>
+    <div>
+      <label for="role">Role</label>
+      <select ng-model="lc.selectedRole" ng-options="x.role for x in lc.roles">
+
+      </select>
+    </div>
     <input class="btn btn-default" type="submit" name="submit" value="Register" />
     <a href="#home">Cancel</a>
   </form>
+
+  <div class="">
+    <md-input-container>
+       <label>Title</label>
+       <input ng-model="user.title">
+     </md-input-container>
+  </div>
+
+
 
 </div>

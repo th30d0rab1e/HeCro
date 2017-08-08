@@ -1,6 +1,23 @@
 <div ng-include="'views/partials/nav.html'"></div>
 <div class="container">
-  <p>
+  <!-- <p>
     In Info
-  </p>
+  </p> -->
+
+<br>
+
+  <form ng-submit="ic.newTask">
+    <label for="task">Create a new Task:</label>
+    <input type="text" name="" value="" ng-model="ic.newTask">
+    <br><br>
+    <label for="assign">Assigned To: </label>
+
+    <input ng-repeat="ass in assistants" type="checkbox" value="{{ass.username}}">{{ass.username}} <br>
+
+    <br><br>
+    <input class="btn btn-default" type="submit" name="submit" value="Submit" />
+
+    <!-- <md-chips ng-model="myItems" placeholder="Assign to PCA">
+    </md-chips> -->
+  </form>
 </div>

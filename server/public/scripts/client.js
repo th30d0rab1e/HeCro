@@ -1,9 +1,9 @@
-var myApp = angular.module('myApp', ['ngRoute', 'ngMaterial']);
+var myApp = angular.module('myApp', ['ngRoute']);
 
 /// Routes ///
 myApp.config(function($routeProvider, $locationProvider) {
   $locationProvider.hashPrefix('');
-  console.log('myApp -- config')
+  console.log('myApp -- config');
   $routeProvider
     .when('/home', {
       templateUrl: '/views/templates/home.html',
@@ -22,9 +22,18 @@ myApp.config(function($routeProvider, $locationProvider) {
         }
       }
     })
+    .when('/pca', {
+      templateUrl: '/views/templates/pca.html',
+      controller: 'PCAController as pc',
+      resolve: {
+        getuser : function(UserService){
+          return UserService.getuser();
+        }
+      }
+    })
     .when('/info', {
       templateUrl: '/views/templates/info.html',
-      controller: 'InfoController',
+      controller: 'InfoController as ic',
       resolve: {
         getuser : function(UserService){
           return UserService.getuser();

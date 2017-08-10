@@ -1,23 +1,33 @@
 <div ng-include="'views/partials/nav.html'"></div>
 <div class="container">
-  <!-- <p>
-    In Info
-  </p> -->
-
+  
 <br>
 
-  <form ng-submit="ic.newTask">
+  <form ng-submit="ic.newTask()">
     <label for="task">Create a new Task:</label>
-    <input type="text" name="" value="" ng-model="ic.newTask">
+    <input type="text" name="" value="" ng-model="ic.task.input">
     <br><br>
-    <label for="assign">Assigned To: </label>
-
-    <input ng-repeat="ass in assistants" type="checkbox" value="{{ass.username}}">{{ass.username}} <br>
-
+    <p>Assigned To:</p>
+    <label ng-repeat="as in ic.assistants" ng-model="ic.task.assignedTo" for="assign">
+      <input type="checkbox" ng-model="ic.task.assignedTo" ng-true-value="'{{as.username}}'" ng-false-value="''">{{as.username}}
+      <!-- show each user assistants in checkbox's -->
+    </label>
     <br><br>
     <input class="btn btn-default" type="submit" name="submit" value="Submit" />
-
-    <!-- <md-chips ng-model="myItems" placeholder="Assign to PCA">
-    </md-chips> -->
   </form>
+
+  <div class="">
+    <table>
+      <thead>
+        <th>Identification Number</th>
+        <th>Task to Do</th>
+        <th>Assigned To</th>
+      </thead>
+      <tbody ng-repeat="tasks in ic.taskArray">
+        <td>{{tasks.id}}</td>
+        <td>{{tasks.task}}</td>
+        <td>{{tasks.username}}</td>
+      </tbody>
+    </table>
+  </div>
 </div>

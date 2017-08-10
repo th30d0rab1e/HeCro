@@ -10,7 +10,7 @@ myApp.controller('LoginController', function($http, $location, UserService) {
 
     vm.roles = [
       {role: "Manager or Responsible Party", type: 1},
-      {role: "PCA or Responsible for Party", type: 2}
+      {role: "Assistant or PCA", type: 2}
     ];
 
     vm.login = function() {

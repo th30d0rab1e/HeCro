@@ -30,7 +30,7 @@ router.post('/', function(req, res, next) {
       [saveUser.username, saveUser.password, saveUser.role],
         function (err, result) {
           client.end();
-
+          done();
           if(err) {
             console.log("Error inserting data: ", err);
             next(err);
@@ -41,6 +41,5 @@ router.post('/', function(req, res, next) {
   });
 
 });
-
 
 module.exports = router;

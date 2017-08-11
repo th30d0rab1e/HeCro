@@ -4,23 +4,6 @@ var passport = require('passport');
 var path = require('path');
 var pool = require('../modules/pool.js');
 
-function insertAssignedTask(userId, taskId, client){
-  console.log('in server assign task table');
-  client.query("INSERT into assigned_tasks(user_id, task_id)VALUES($1, $2)",
-    [userId, taskId],
-      function (err, result) {
-
-        done();
-        if(err) {
-          console.log("Error inserting data: ", err);
-          next(err);
-        } else {
-          //console.log(result.rows);
-          res.sendStatus(202);
-        }
-      });
-}
-
 router.post('/', function(req, res, next) {
   console.log('in server posting dem tasks', req.user.id);
 
@@ -102,5 +85,30 @@ router.get('/', function(req, res, next) {
   });
 
 });
+
+router.post('/tasks', function(req, res, next) {
+  console.log('in server getting dem managers tasks', req.body.username);
+  console.log('logged in user', req.user.id);
+  pool.connect(function(err, client, done) {
+    if(err) {
+      console.log("Error connecting: ", err);
+      next(err);
+    }
+    client.query("select users.username, tasks.task, assigned_tasks.user_id from users join tasks on users.id = tasks.manager_id join assigned_tasks on tasks.id = assigned_tasks.task_id where users.username ilike $1 and assigned_tasks.user_id = $2;",
+      [req.body.username,req.user.id],
+        function (err, result) {
+          done();
+          if(err) {
+            console.log("Error inserting data: ", err);
+            next(err);
+          } else {
+            console.log(result.rows);
+            res.send(result.rows);
+          }
+        });
+  });
+
+});
+
 
 module.exports = router;

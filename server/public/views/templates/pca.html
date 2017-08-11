@@ -1,8 +1,10 @@
 <div ng-include="'views/partials/nav.html'"></div>
-<p>this is the pca page</p>
+<h1>A list of tasks from {{selectedManager.username}}</h1>
 
 <div class="">
-  <select class="" name="" ng-options="man.username for man.username in pc.managersArray">
-
+  <select ng-options="selectedManager.username for selectedManager in pc.managersArray" ng-change="pc.displayTable(selectedManager)" ng-model="selectedManager" >
   </select>
+
+  
+
 </div>

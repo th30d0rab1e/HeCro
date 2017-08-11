@@ -4,7 +4,6 @@ var passport = require('passport');
 var path = require('path');
 var pool = require('../modules/pool.js');
 
-
 router.get('/', function(req, res) {
   console.log('in server getting dem assistants');
 
@@ -24,7 +23,7 @@ router.get('/', function(req, res) {
             console.log(result.rows);
             res.send(result.rows);
           }
-        });
+      });
   });
 
 });

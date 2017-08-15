@@ -40,6 +40,15 @@ myApp.config(function($routeProvider, $locationProvider) {
         }
       }
     })
+    .when('/completedTasks', {
+      templateUrl: '/views/templates/history.html',
+      controller: 'CompletedTasksController as ctc',
+      resolve : {
+        getuser : function(UserService){
+          return UserService.getuser();
+        }
+      }
+    })
     .otherwise({
       redirectTo: 'home'
     });

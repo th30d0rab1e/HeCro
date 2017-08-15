@@ -1,6 +1,6 @@
 <div ng-include="'views/partials/nav.html'"></div>
 <div class="container">
-  
+
 <br>
 
   <form ng-submit="ic.newTask()">
@@ -22,11 +22,13 @@
         <th>Identification Number</th>
         <th>Task to Do</th>
         <th>Assigned To</th>
+        <th></th>
       </thead>
       <tbody ng-repeat="tasks in ic.taskArray">
         <td>{{tasks.id}}</td>
         <td>{{tasks.task}}</td>
         <td>{{tasks.username}}</td>
+        <td><button type="button" name="button" ng-click="ic.deleteTask(tasks.id)">Delete</button></td>
       </tbody>
     </table>
   </div>

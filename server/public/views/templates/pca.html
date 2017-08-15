@@ -5,6 +5,20 @@
   <select ng-options="selectedManager.username for selectedManager in pc.managersArray" ng-change="pc.displayTable(selectedManager)" ng-model="selectedManager" >
   </select>
 
-  
+<span>{{pc.message}}</span>
+
+<div class="">
+  <table>
+    <tbody>
+      <tr ng-style="styleObj" ng-repeat="task in pc.taskArray">
+        <td>{{task.task}}</td>
+        <td ><input type="text" name="" value="" ng-model="task.description"></td>
+        <td><button type="button" name="button" ng-click="pc.submitTask(task)">This task is Finished</button></td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
 
 </div>

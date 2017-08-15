@@ -94,7 +94,7 @@ router.post('/tasks', function(req, res, next) {
       console.log("Error connecting: ", err);
       next(err);
     }
-    client.query("select users.username, tasks.task, assigned_tasks.user_id from users join tasks on users.id = tasks.manager_id join assigned_tasks on tasks.id = assigned_tasks.task_id where users.username ilike $1 and assigned_tasks.user_id = $2;",
+    client.query("select tasks.id, users.username, tasks.task, assigned_tasks.user_id from users join tasks on users.id = tasks.manager_id join assigned_tasks on tasks.id = assigned_tasks.task_id where users.username = $1 and assigned_tasks.user_id = $2 or users.username = $1 and assigned_tasks.user_id = 0;",
       [req.body.username,req.user.id],
         function (err, result) {
           done();
@@ -110,5 +110,118 @@ router.post('/tasks', function(req, res, next) {
 
 });
 
+router.delete('/:id', function(req, res) {
+
+  console.log("task id", req.params.id);
+  // errorConnecting is bool, db is what we query against,
+  // done is a function that we call when we're done
+
+  //delete from the assigned_tasks table first, foreign key constraint
+  pool.connect(function(errorConnectingToDatabase, db, done) {
+    var id = req.params.id;
+    console.log(id);
+    if (errorConnectingToDatabase) {
+      console.log('Error connecting to the database.');
+      res.sendStatus(500);
+    } else {
+      // We connected to the database!!!
+      // Now we're going to GET things from the db
+      var queryText = 'DELETE FROM assigned_tasks WHERE "task_id" = $1;';
+      // errorMakingQuery is a bool, result is an object
+      db.query(queryText, [id], function(errorMakingQuery, result) {
+        done();
+        if (errorMakingQuery) {
+          console.log('Attempted to query(assigned_tasks delete) with', queryText, errorMakingQuery);
+          console.log('Error making delete assigned_tasks query');
+          res.sendStatus(500);
+        } else {
+          console.log(result.rows);
+          // Send back the results
+          //res.sendStatus(200);
+          //continue to delete from the tasks table
+          pool.connect(function(errorConnectingToDatabase, db, done) {
+            var id = req.params.id;
+            console.log(id);
+            if (errorConnectingToDatabase) {
+              console.log('Error connecting to the database.');
+              res.sendStatus(500);
+            } else {
+              // We connected to the database!!!
+              // Now we're going to GET things from the db
+              var queryText = 'DELETE FROM tasks WHERE "id" = $1;';
+              // errorMakingQuery is a bool, result is an object
+              db.query(queryText, [id], function(errorMakingQuery, result) {
+                done();
+                if (errorMakingQuery) {
+                  console.log('Attempted to query with', queryText, errorMakingQuery);
+                  console.log('Error making query');
+                  res.sendStatus(500);
+                } else {
+                  console.log(result.rows);
+                  // Send back the results
+                  res.sendStatus(200);
+                }
+              }); // end query
+            } // end if
+          }); // end pool
+          //end of delete from task table
+        }
+      }); // end query
+    } // end if
+  }); // end pool
+  //end delete assigned_tasks
+}); // end of DELETE
+
+router.post('/finished', function(req, res, next) {
+  console.log('in server posting dem finished tasks', req.body);
+
+  pool.connect(function(err, client, done) {
+    if(err) {
+      console.log("Error connecting: ", err);
+      next(err);
+    }
+
+    client.query("insert into finished_tasks(task_id, user_id, input) values($1, $2, $3);",
+      [req.body.id, req.user.id, req.body.description],
+        function (err, result) {
+          done();
+          //client.end();
+          if(err) {
+            console.log("Error inserting data: ", err);
+            next(err);
+          } else {
+            //console.log(result.rows);
+            res.sendStatus(202);
+          }
+        });
+  });
+
+});
+
+router.post('/getCompleted', function(req, res, next) {
+  console.log('in server getting dem submitted tasks', req.body);
+
+  pool.connect(function(err, client, done) {
+    if(err) {
+      console.log("Error connecting: ", err);
+      next(err);
+    }
+
+    client.query("select * from finished_tasks join tasks on finished_tasks.task_id = tasks.id where manager_id = $1 and user_id = (select id from users where username = $2);",
+      [req.user.id, req.body.username],
+        function (err, result) {
+          done();
+          //client.end();
+          if(err) {
+            console.log("Error inserting data: ", err);
+            next(err);
+          } else {
+            //console.log(result.rows);
+            res.send(result.rows);
+          }
+        });
+  });
+
+});
 
 module.exports = router;

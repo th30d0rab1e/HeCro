@@ -7,7 +7,7 @@ myApp.controller('InfoController', function($http,UserService) {
   getTasks();
 
   vm.task = {
-    input: 'clean me',
+    input: 'do a backflip',
     assignedTo: ''
   };
 
@@ -29,19 +29,33 @@ myApp.controller('InfoController', function($http,UserService) {
     });
   }
 
+  vm.deleteTask = function(taskId){
+    console.log('removing taskId', taskId);
+
+    $http.delete('/tasks/' + taskId).then(function(response){
+      console.log('delete response', response);
+      getTasks();
+    });
+  }
+
   vm.newTask = function(){
     console.log(vm.task);
     $http.post('/tasks', vm.task).then(function(response){
       console.log(response.data);
 
-      getTasks();
+      //assigned To could be no one
+      if(vm.task.assignedTo === ''){
+        vm.task.assignedTo = 'Anyone';
+      }
 
       var obj = {
         taskid: response.data.taskid,
         usernames: vm.task.assignedTo
       };
 
+
       $http.post('/tasks/assign', obj).then(function(response){
+        getTasks();
         console.log(response);
       });
     });

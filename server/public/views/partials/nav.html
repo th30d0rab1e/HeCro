@@ -1,9 +1,10 @@
 <div class="navbar" ng-controller="NavController as nc">
   <div class="container">
     <ul>
-      <li><a href="#/user">User Home (role: {{nc.userObject.role}})</a></li>
+      <li><a href="#/user">Home</a></li>
       <li ng-if="nc.userObject.role == 1"><a href="#/info">Create a Task</a></li>
       <li ng-if="nc.userObject.role == 2"><a href="#/pca">{{nc.userObject.userName}}'s To-Do List</a></li>
+      <li ng-if="nc.userObject.role == 1"><a href="#/completedTasks">View Submitted Tasks</a></li>
     </ul>
   </div>
 </div>

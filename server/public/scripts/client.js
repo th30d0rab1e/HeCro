@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute']);
+var myApp = angular.module('myApp', ['ngRoute', 'checklist-model', 'ui.bootstrap']);
 
 /// Routes ///
 myApp.config(function($routeProvider, $locationProvider) {
@@ -43,6 +43,15 @@ myApp.config(function($routeProvider, $locationProvider) {
     .when('/completedTasks', {
       templateUrl: '/views/templates/history.html',
       controller: 'CompletedTasksController as ctc',
+      resolve : {
+        getuser : function(UserService){
+          return UserService.getuser();
+        }
+      }
+    })
+    .when('/aboutMe', {
+      templateUrl: '/views/templates/aboutMe.html',
+      controller: 'AboutMeController as amc',
       resolve : {
         getuser : function(UserService){
           return UserService.getuser();

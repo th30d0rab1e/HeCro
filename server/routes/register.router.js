@@ -35,11 +35,37 @@ router.post('/', function(req, res, next) {
             console.log("Error inserting data: ", err);
             next(err);
           } else {
-            res.redirect('/');
+          var id = result.rows[0].id;
+          
+          res.redirect('/');
           }
         });
   });
 
 });
+
+function insertDummy(id){
+
+
+    pool.connect(function(err, client, done) {
+      if(err) {
+        console.log("Error connecting: ", err);
+        next(err);
+      }
+      client.query("INSERT INTO about_me (userid, phone_number, address, description) VALUES ($1, $2, $3, $4)",
+        [id,'','',''],
+          function (err, result) {
+            client.end();
+            done();
+            if(err) {
+              console.log("Error inserting data: ", err);
+            } else {
+              res.redirect('/');
+            }
+          });
+    });
+
+
+}
 
 module.exports = router;

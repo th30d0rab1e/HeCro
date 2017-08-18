@@ -1,21 +1,23 @@
 <div ng-include="'views/partials/nav.html'"></div>
+<div class="container">
 <h1>A list of tasks from {{selectedManager.username}}</h1>
 
-<div class="">
-  <select ng-options="selectedManager.username for selectedManager in pc.managersArray" ng-change="pc.displayTable(selectedManager)" ng-model="selectedManager" >
+
+  <select class="form-control" ng-options="selectedManager.username for selectedManager in pc.managersArray" ng-change="pc.displayTable(selectedManager)" ng-model="selectedManager" >
   </select>
+
+  <br><br>
 
 <span>{{pc.message}}</span>
 
-<div class="">
-  <table>
+<div class="table-responsive">
+  <table class="table">
     <tbody>
-      <tr ng-style="styleObj" ng-repeat="task in pc.taskArray">
+      <tr ng-repeat="task in pc.taskArray">
         <td>{{task.task}}</td>
         <td ><input type="text" name="" value="" ng-model="task.description"></td>
-        <td><button type="button" name="button" ng-click="pc.submitTask(task)">This task is Finished</button></td>
+        <td><button type="button" class="btn btn-primary" name="button" ng-click="pc.submitTask(task)">This task is Finished</button></td>
       </tr>
-
     </tbody>
   </table>
 </div>

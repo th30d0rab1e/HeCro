@@ -1,8 +1,25 @@
 <div ng-include="'views/partials/nav.html'"></div>
-<div class=".container">
+<div class="container">
   <p>Here is a list of tasks that you've had that were submitted by an assistant.</p>
   <p>You can sort the results with the dropdown's below.</p>
 
-  <select ng-options="selectedAssistant.username for selectedAssistant in ctc.assistantsArray" ng-change="ctc.getTable(selectedAssistant)" ng-model="selectedAssistant">
+  <select class="form-control" ng-options="selectedAssistant.username for selectedAssistant in ctc.assistantsArray" ng-change="ctc.getTable(selectedAssistant)" ng-model="selectedAssistant">
   </select>
+
+<div class="table-responsive">
+  <table class="table">
+    <tr>
+      <th>Task Is</th>
+      <th>Assistant's Submission</th>
+      <th>Date-Time Submitted</th>
+    </tr>
+    <tbody>
+      <tr ng-class="{strike:[condition]}" ng-repeat="task in ctc.subTaskArray">
+        <td>{{task.task}}</td>
+        <td>{{task.input}}</td>
+        <td>{{task.submitted_timestamp | date:'medium'}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 </div>

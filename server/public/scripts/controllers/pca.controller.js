@@ -6,19 +6,13 @@ myApp.controller('PCAController', function($http,UserService) {
 
   getManagers();
 
-  vm.styleObj = {
-      "text-decoration": "line-through"
-  }
+
 
   function booleanStrike(x){
     if(x){
-      vm.styleObj = {
-          "text-decoration": "line-through"
-      }
+      vm.condition = true;
     } else {
-      vm.styleObj = {
-        "text-decoration": "none"
-      }
+      vm.condition = false;
     }
   }
 
@@ -37,6 +31,11 @@ myApp.controller('PCAController', function($http,UserService) {
       vm.taskArray = response.data;
       console.log('GOT dem tasks!', response);
       console.log('length of response.rows:', response.data.length);
+      if(response.data.length === 0){
+        vm.message="No tasks from this manager has been assigned.";
+      } else {
+        vm.message="";
+      }
     });
   };
 

@@ -1,23 +1,21 @@
 <div ng-include="'views/partials/nav.html'"></div>
 <div class="container">
 
-<br>
-
   <form ng-submit="ic.newTask()">
     <label for="task">Create a new Task:</label>
-    <input type="text" name="" value="" ng-model="ic.task.input">
+    <input class="form-control" type="text" name="" value="" ng-model="ic.task.input"> {{ic.message}}
     <br><br>
     <p>Assigned To:</p>
-    <label ng-repeat="as in ic.assistants" ng-model="ic.task.assignedTo" for="assign">
-      <input type="checkbox" ng-model="ic.task.assignedTo" ng-true-value="'{{as.username}}'" ng-false-value="''">{{as.username}}
+    <label ng-repeat="as in ic.assistants" class="checkbox-inline">
+      <input  type="checkbox" checklist-model="ic.task.assignedTo" checklist-value="as.username">{{as.username}}
       <!-- show each user assistants in checkbox's -->
     </label>
     <br><br>
     <input class="btn btn-default" type="submit" name="submit" value="Submit" />
   </form>
 
-  <div class="">
-    <table>
+  <div class="table-responsive">
+    <table class="table">
       <thead>
         <th>Identification Number</th>
         <th>Task to Do</th>
@@ -28,7 +26,7 @@
         <td>{{tasks.id}}</td>
         <td>{{tasks.task}}</td>
         <td>{{tasks.username}}</td>
-        <td><button type="button" name="button" ng-click="ic.deleteTask(tasks.id)">Delete</button></td>
+        <td><button type="button" name="button" ng-click="ic.deleteTask(tasks)">Delete</button></td>
       </tbody>
     </table>
   </div>

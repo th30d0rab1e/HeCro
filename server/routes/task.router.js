@@ -44,20 +44,23 @@ router.post('/assign', function(req, res, next) {
       console.log("Error connecting: ", err);
       next(err);
     }
+    for(i = 0;i<req.body.usernames.length;i++){
+      console.log('iterated index', i);
+      client.query("insert into assigned_tasks(user_id, task_id) values((select id from users where username= $1),(select id from tasks where id=$2));",
+        [req.body.usernames[i], req.body.taskid],
+          function (err, result) {
+            done();
+            //client.end();
+            if(err) {
+              console.log("Error inserting data: ", err);
+              next(err);
+            } else {
+              //console.log(result.rows);
 
-    client.query("insert into assigned_tasks(user_id, task_id) values((select id from users where username= $1),(select id from tasks where id=$2));",
-      [req.body.usernames, req.body.taskid],
-        function (err, result) {
-          done();
-          //client.end();
-          if(err) {
-            console.log("Error inserting data: ", err);
-            next(err);
-          } else {
-            //console.log(result.rows);
-            res.sendStatus(202);
-          }
-        });
+            }
+          });
+      }
+      res.sendStatus(202);
   });
 
 });
@@ -110,37 +113,39 @@ router.post('/tasks', function(req, res, next) {
 
 });
 
-router.delete('/:id', function(req, res) {
-
-  console.log("task id", req.params.id);
+router.delete('/:id/:username', function(req, res, next) {
+  console.log('in server id', req.params.id);
+  console.log('in server username', req.params.username);
+  //console.log("task id", req.params);
   // errorConnecting is bool, db is what we query against,
   // done is a function that we call when we're done
 
   //delete from the assigned_tasks table first, foreign key constraint
   pool.connect(function(errorConnectingToDatabase, db, done) {
     var id = req.params.id;
-    console.log(id);
+    //console.log(id);
     if (errorConnectingToDatabase) {
       console.log('Error connecting to the database.');
       res.sendStatus(500);
     } else {
       // We connected to the database!!!
       // Now we're going to GET things from the db
-      var queryText = 'DELETE FROM assigned_tasks WHERE "task_id" = $1;';
+      var queryText = 'DELETE FROM assigned_tasks WHERE "task_id" = $1 and "user_id" = (select id from users where username = $2);';
       // errorMakingQuery is a bool, result is an object
-      db.query(queryText, [id], function(errorMakingQuery, result) {
+      db.query(queryText, [req.params.id, req.params.username], function(errorMakingQuery, result) {
         done();
         if (errorMakingQuery) {
           console.log('Attempted to query(assigned_tasks delete) with', queryText, errorMakingQuery);
           console.log('Error making delete assigned_tasks query');
-          res.sendStatus(500);
+          next();
+          //res.sendStatus(500);
         } else {
           console.log(result.rows);
           // Send back the results
           //res.sendStatus(200);
           //continue to delete from the tasks table
           pool.connect(function(errorConnectingToDatabase, db, done) {
-            var id = req.params.id;
+            //var id = req.params.id;
             console.log(id);
             if (errorConnectingToDatabase) {
               console.log('Error connecting to the database.');
@@ -148,9 +153,9 @@ router.delete('/:id', function(req, res) {
             } else {
               // We connected to the database!!!
               // Now we're going to GET things from the db
-              var queryText = 'DELETE FROM tasks WHERE "id" = $1;';
+              var queryText = 'DO $do$ begin if not exists (select task_id from assigned_tasks where task_id ='+ req.params.id +') THEN delete from tasks where id = '+ req.params.id +'; end if; end $do$;';
               // errorMakingQuery is a bool, result is an object
-              db.query(queryText, [id], function(errorMakingQuery, result) {
+              db.query(queryText, function(errorMakingQuery, result) {
                 done();
                 if (errorMakingQuery) {
                   console.log('Attempted to query with', queryText, errorMakingQuery);

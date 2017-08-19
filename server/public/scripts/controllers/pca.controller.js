@@ -7,7 +7,6 @@ myApp.controller('PCAController', function($http,UserService) {
   getManagers();
 
 
-
   function booleanStrike(x){
     if(x){
       vm.condition = true;
@@ -17,7 +16,7 @@ myApp.controller('PCAController', function($http,UserService) {
   }
 
   function getManagers(){
-    $http.get('/assistants/managers').then(function(response){
+    $http.get('/assistants').then(function(response){
       console.log('managers GOT EM!', response.data);
       vm.managersArray = response.data;
     });
@@ -39,13 +38,16 @@ myApp.controller('PCAController', function($http,UserService) {
     });
   };
 
-  vm.submitTask = function(task){
-    console.log(task);
+  vm.submitTask = function(task, index){
+    console.log('index',index);
+    console.log('task is',task);
     if(task.hasOwnProperty('description')){
       $http.post('/tasks/finished', task).then(function(response){
         vm.message = "Task is completed, good job " + vm.userService.userObject.userName + ".";
         //booleanStrike(true);
         console.log(response);
+        vm.taskArray.splice(index, 1);
+
       });
     } else {
       console.log('empty');
@@ -53,5 +55,7 @@ myApp.controller('PCAController', function($http,UserService) {
       vm.message = "Cmon " + vm.userService.userObject.userName + ", at least type 'DONE'.";
     }
 
-  }
+  };
+
+
 });

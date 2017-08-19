@@ -5,15 +5,16 @@
     <label for="task">Create a new Task:</label>
     <input class="form-control" type="text" name="" value="" ng-model="ic.task.input"> {{ic.message}}
     <br><br>
-    <p>Assigned To:</p>
+    <label for="assigned">Assign this task to an assistant. Otherwise just press submit to assign to anyone.</label>
+    <br>
     <label ng-repeat="as in ic.assistants" class="checkbox-inline">
-      <input  type="checkbox" checklist-model="ic.task.assignedTo" checklist-value="as.username">{{as.username}}
+      <input data-html="true" popover-placement="top-right" uib-popover="{{as.username}}'s Information: (Phone Number: {{as.phone_number}})  (Address: {{as.address}}) (About me: {{as.description}})" popover-trigger="'mouseenter'" type="checkbox" checklist-model="ic.task.assignedTo" checklist-value="as.username">{{as.username}}
       <!-- show each user assistants in checkbox's -->
     </label>
     <br><br>
-    <input class="btn btn-default" type="submit" name="submit" value="Submit" />
+    <input class="btn btn-primary" type="submit" name="submit" value="Submit" />
   </form>
-
+  <br>
   <div class="table-responsive">
     <table class="table">
       <thead>
@@ -26,7 +27,7 @@
         <td>{{tasks.id}}</td>
         <td>{{tasks.task}}</td>
         <td>{{tasks.username}}</td>
-        <td><button type="button" name="button" ng-click="ic.deleteTask(tasks)">Delete</button></td>
+        <td><button class="btn btn-danger" type="button" name="button" ng-click="ic.deleteTask(tasks)">Delete</button></td>
       </tbody>
     </table>
   </div>

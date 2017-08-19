@@ -16,7 +16,7 @@
       <tr ng-repeat="task in pc.taskArray">
         <td>{{task.task}}</td>
         <td ><input type="text" name="" value="" ng-model="task.description"></td>
-        <td><button type="button" class="btn btn-primary" name="button" ng-click="pc.submitTask(task)">This task is Finished</button></td>
+        <td><button type="button" class="btn btn-primary" name="button" ng-click="pc.submitTask(task, $index)">This task is Finished</button></td>
       </tr>
     </tbody>
   </table>

@@ -81,3 +81,12 @@ li a:hover {
 tr .strike {
   text-decoration: line-through;
 }
+
+.fade {
+  transition: 1s linear all;
+  -webkit-transition: 1s linear all;
+}
+
+.fade.ng-enter {
+  opacity: 0;
+}

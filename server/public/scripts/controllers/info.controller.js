@@ -8,6 +8,7 @@ myApp.controller('InfoController', function($http, UserService, $uibModal, $log)
   getPCAs();
   getTasks();
 
+
   vm.task = {
     input: '',
     assignedTo: []
@@ -40,8 +41,7 @@ myApp.controller('InfoController', function($http, UserService, $uibModal, $log)
     }).catch(function(e){
       getTasks(); // just in case it doesnt work :)
     });
-
-  }
+  };
 
   vm.newTask = function(){
     console.log('task', vm.task);
@@ -67,6 +67,7 @@ myApp.controller('InfoController', function($http, UserService, $uibModal, $log)
           console.log(response);
           vm.task.input = "";
         });
+
       });
     }
   };

@@ -6,12 +6,15 @@
   <select class="form-control" ng-options="selectedManager.username for selectedManager in pc.managersArray" ng-change="pc.displayTable(selectedManager)" ng-model="selectedManager" >
   </select>
 
-  <br><br>
-
+  <br>
+<p ng-if="selectedManager.phone_number"><b>Phone Number:</b> {{selectedMananger.phone_number}} </p>
+<p ng-if="selectedManager.address"><b>Address: </b>{{selectedManager.address}}</p>
+<p ng-if="selectedManager.description"><b>Description: </b>{{selectedManager.description}}</p>
+<br><br>
 <span>{{pc.message}}</span>
 
 <div class="table-responsive">
-  <table class="table">
+  <table class="table table-hover">
     <tbody>
       <tr ng-repeat="task in pc.taskArray">
         <td>{{task.task}}</td>

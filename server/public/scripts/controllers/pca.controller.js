@@ -16,7 +16,7 @@ myApp.controller('PCAController', function($http,UserService) {
   }
 
   function getManagers(){
-    $http.get('/assistants').then(function(response){
+    $http.get('/assistants/managers').then(function(response){
       console.log('managers GOT EM!', response.data);
       vm.managersArray = response.data;
     });
@@ -31,7 +31,7 @@ myApp.controller('PCAController', function($http,UserService) {
       console.log('GOT dem tasks!', response);
       console.log('length of response.rows:', response.data.length);
       if(response.data.length === 0){
-        vm.message="No tasks from this manager has been assigned.";
+        vm.message="No tasks from this manager has been assigned for today.";
       } else {
         vm.message="";
       }

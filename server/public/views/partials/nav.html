@@ -6,6 +6,7 @@
       <li ng-if="nc.userObject.role == 1"><a href="#/info">Create a Task</a></li>
       <li ng-if="nc.userObject.role == 2"><a href="#/pca">{{nc.userObject.userName}}'s To-Do List</a></li>
       <li ng-if="nc.userObject.role == 1"><a href="#/completedTasks">View Submitted Tasks</a></li>
+      <li><button class="btn btn-primary" ng-click="nc.userService.logout()">Log Out</button></li>
     </ul>
   </div>
 </div>

@@ -90,15 +90,15 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/tasks', function(req, res, next) {
-  console.log('in server getting dem managers tasks', req.body.username);
+  console.log('in server getting dem managers tasks FROM ', req.body.username);
   console.log('logged in user', req.user.id);
   pool.connect(function(err, client, done) {
     if(err) {
       console.log("Error connecting: ", err);
       next(err);
     }
-    client.query("select tasks.id, users.username, tasks.task, assigned_tasks.user_id from users join tasks on users.id = tasks.manager_id join assigned_tasks on tasks.id = assigned_tasks.task_id where users.username = $1 and assigned_tasks.user_id = $2 or users.username = $1 and assigned_tasks.user_id = 0;",
-      [req.body.username,req.user.id],
+    client.query("select  tasks.id, users.username, tasks.task, assigned_tasks.user_id, finished_tasks.input from users join tasks on users.id = tasks.manager_id join assigned_tasks on tasks.id = assigned_tasks.task_id left join finished_tasks on tasks.id = finished_tasks.task_id AND finished_tasks.submitted_timestamp::date > (CURRENT_DATE - INTERVAL '1 day') where (((users.username = $1) and (assigned_tasks.user_id = $2)) or ((users.username = $1) and (assigned_tasks.user_id = 0))) AND finished_tasks.submitted_timestamp IS NULL ORDER BY tasks.id;",
+      [req.body.username, req.user.id],
         function (err, result) {
           done();
           if(err) {

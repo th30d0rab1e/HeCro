@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
 
       next(err);
     }
-    client.query("SELECT users.username, userid, phone_number, email, address, description FROM users left outer join about_me on users.id = about_me.userid WHERE users.role =" + req.user.id + ";",
+    client.query("SELECT users.username, userid, phone_number, email, address, description FROM users left outer join about_me on users.id = about_me.userid WHERE users.role =2",
         function (err, result) {
           done();
           //client.end();
@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
             console.log("Error inserting data: ", err);
             next(err);
           } else {
-            console.log(result.rows);
+            console.log('each assistant', result.rows);
             res.send(result.rows);
           }
       });

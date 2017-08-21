@@ -1,7 +1,16 @@
 <div ng-include="'views/partials/nav.html'"></div>
 <div class="container">
     <h1 id="welcome" class="lead">Welcome, {{uc.userObject.userName}}!</h1>
-    <button class="btn btn-primary" ng-click="uc.userService.logout()">Log Out</button>
 
-    <p></p>
+    <p><b>Project HeCro is meant for tracking things that should be done.</b></p>
+
+    <p>We can do this assigning tasks from a manager, to an assistant. This way a manager
+    can keep track what should be done, when, where, and who with. An assistant will read
+  assignments assigned from a manager, and submit any notes they feel the need to share. Feel free
+to fill out information about yourself if you would like on the <a href="#/aboutMe">About Me</a> page.</p>
+
+  <p ng-if="uc.userObject.role == 1">You have registered as a manager, create a task by <a href="#/info">clicking me.</a></p>
+
+  <p ng-if="uc.userObject.role == 2">You have registered as an assistant, check your to-do list by <a href="#/pca">clicking me.</a></p>
+
 </div>

@@ -6,6 +6,8 @@
   <select class="form-control" ng-options="selectedAssistant.username for selectedAssistant in ctc.assistantsArray" ng-change="ctc.getTable(selectedAssistant)" ng-model="selectedAssistant">
   </select>
 
+  <p>{{ctc.message}}</p>
+
 <div class="table-responsive">
   <table class="table table-hover">
     <tr>

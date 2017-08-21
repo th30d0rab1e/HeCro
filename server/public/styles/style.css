@@ -8,6 +8,7 @@ body, html {
 .instructions .container h1 {
   font-size: 32px;
   font-weight: 600;
+  color: white;
 }
 
 .instructions {
@@ -89,4 +90,8 @@ tr .strike {
 
 .fade.ng-enter {
   opacity: 0;
+}
+
+.navbar ul li:last-child {
+  float: right;
 }
